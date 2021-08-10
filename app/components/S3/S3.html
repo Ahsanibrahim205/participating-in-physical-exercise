@@ -1,0 +1,141 @@
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/x-icon;base64,">
+<title>Application Title</title>
+<link rel="stylesheet" href="app/styles/app-style.css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Wellkom | Be Well - Perform Well - Live Well Longer</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="app/styles/newcss.css">
+<link rel="stylesheet" href="app/styles/bootstrap.min.css">
+<link rel="stylesheet" href="app/styles/bootstrap-theme.min.css">
+<link rel="stylesheet" href="app/styles/fontAwesome.css">
+<link rel="stylesheet" href="app/styles/light-box.css">
+<link rel="stylesheet" href="app/styles/owl-carousel.css">
+<link rel="stylesheet" href="app/styles/templatemo-style.css">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+<div class="page-content">
+ <section id="video" class="content-section">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-heading">
+                            <h1>How to build more exercise <em>into your life</em></h1>
+                        </div>
+                        <div class="text-content">
+                          <div class="section-heading">
+                        <ul>
+                            <li>Plan uninterrupted, continuous rhythmic and repetitive movement of the body 3 or
+more times per week. Each session to be of real benefit needs to last for 20 minutes or more, but when starting you may find that 15 minutes is enough. </li>
+                            <li>Work first on getting into the habit of doing the 3 sessions per week. Then on
+increasing the length of each session. </li>
+                            <li>Feel comfortably exerted after each session. There is no need for you to work yourself into pain or exhaustion to get health benefits. It is better to work out right than to drop out discouraged. To be a little more technically precise, the target heart rate zone during an aerobic session lies between 65-85% of (220 minus
+your age). For example, if you are 45 years old the target range is calculated as being 114 to 149 beats per minute, that is 0.65(220–45) to 0.85(220–45). When starting, the lower figure is the better guide. </li>
+                            <li>People often report that exercising with a friend is helpful in several ways. </li>
+                            <li>Some of the most popular forms of aerobic activity appear to be jogging, powerwalking (walking at a fast pace), bicycling, swimming and working out at a fitness centre. What is important is to try out various ones and pick those which give you most pleasure to build a varied and interesting personalised exercise programme. </li>
+                            <li>Important note. There are some known risks if individuals expose themselves to too much exercise. Although these are generally unlikely to happen, forewarned is to be forearmed. 
+                                <ol>
+                                    <li>Middle aged individuals who run long distances (particularly on hard surfaces) have been shown to be prone to higher rates of injuries to joints. </li>
+                                    <li>People who use exercise as a means of coping with their dissatisfaction
+with their body and self-image may develop a psychological dependency on exercise: negative addiction’. </li>
+                                    <li>They may do so much exercise that it becomes a compulsive habit. </li>
+                                </ol>
+                            </li>
+                            <li>So stick reasonably to the guidelines of 5 sessions per week, for 30 minutes, at
+moderate intensity, across a variety of types of exercises that you can enjoy on your own or with friends. Remember physical well-being is only achievable if you participate in some physical exercise. There are enough ways to exercise for everyone to find something satisfying to do, including you!</li>
+                        </ul>
+                        <p>What type of physical exercise, when and how will you add into your life? <button  style="background-color: transparent;border:none;" id="newbtn1"><i class="fa fa-microphone" aria-hidden="true"></i></button></p>
+                         <div id="newcolumn1" style="display:none">
+    <table  width="100%">
+      <tr>
+        <td><input id="subscriptionKey" type="hidden" type="text" size="40" value="bea8ac191ce041ecbcabc85e062630f5"></td>
+      </tr>
+      <tr>
+        <td><input type="hidden" id="serviceRegion" type="text" size="40" value="westeurope"></td>
+      </tr>
+      
+
+    </table>
+  </div>
+                            <form>
+                              <textarea  id="newtxt1" name="text" cols="100" rows="10" class="form-control"></textarea>
+                            </form>
+                        </div></div></div></div>                                
+            </section>  
+</div>
+<script>
+
+    // status fields and start button in UI
+
+    var newtxt1;
+
+    var newbtn1;
+
+    // subscription key and region for speech services.
+    var subscriptionKey, serviceRegion, languageTargetOptions, languageSourceOptions;
+    var SpeechSDK;
+    var recognizerone;
+
+
+      newbtn1 = document.getElementById("newbtn1");
+      subscriptionKey = document.getElementById("subscriptionKey");
+      serviceRegion = document.getElementById("serviceRegion");
+
+
+      newtxt1 = document.getElementById("newtxt1");
+      newbtn1.addEventListener("click", function () {
+        newbtn1.disabled = true;
+        newbtn1.style.color="red";
+        newtxt1.innerHTML = "";
+
+        if (subscriptionKey.value === "" || subscriptionKey.value === "subscription") {
+          alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+          newbtn1.disabled = false;
+          return;
+        }
+        var speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+
+        speechConfig.speechRecognitionLanguage = "en-US";
+        let language = "en"
+        speechConfig.addTargetLanguage(language)
+
+        var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+        recognizerone = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+
+        recognizerone.recognizeOnceAsync(
+          function (result) {
+            newbtn1.disabled = false;
+            newbtn1.style.color="black";
+            let translation = result.translations.get(language);
+            window.console.log(translation);
+            newtxt1.innerHTML += translation;
+
+            recognizerone.close();
+            recognizerone = undefined;
+          },
+          function (err) {
+            newbtn1.disabled = false;
+            newbtn1.style.color="black";
+            newtxt1.innerHTML += err;
+            window.console.log(err);
+
+            recognizerone.close();
+            recognizerone = undefined;
+          });
+      });
+
+      if (!!window.SpeechSDK) {
+        SpeechSDK = window.SpeechSDK;
+        newbtn1.disabled=false;
+        newbtn1.style.color="black";
+        document.getElementById('newcolumn1').style.display = 'block';
+        document.getElementById('warning').style.display = 'none';
+      }
+
+  </script>
